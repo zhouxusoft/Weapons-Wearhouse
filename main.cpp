@@ -1,39 +1,39 @@
 /*
-×°±¸²Ö¿â¹ÜÀíÏµÍ³
-1.×°±¸µÄÌí¼Ó
-2.×°±¸µÄÉ¾³ı
-3.×°±¸µÄÊôĞÔĞŞ¸Ä
-4.×°±¸µÄ²éÑ¯{
-    4.1×°±¸µÄÃû³Ì²éÑ¯
-    4.2×°±¸µÄÖ°Òµ²éÑ¯
-    4.3×°±¸µÄÀàĞÍ²éÑ¯
-    Ä£ºı²éÑ¯»á½«²éµ½µÄÎäÆ÷°´ÕÕµÈ¼¶´Ó¸ßµ½µÍÅÅÁĞ
+è£…å¤‡ä»“åº“ç®¡ç†ç³»ç»Ÿ
+1.è£…å¤‡çš„æ·»åŠ 
+2.è£…å¤‡çš„åˆ é™¤
+3.è£…å¤‡çš„å±æ€§ä¿®æ”¹
+4.è£…å¤‡çš„æŸ¥è¯¢{
+    4.1è£…å¤‡çš„åç¨‹æŸ¥è¯¢
+    4.2è£…å¤‡çš„èŒä¸šæŸ¥è¯¢
+    4.3è£…å¤‡çš„ç±»å‹æŸ¥è¯¢
+    æ¨¡ç³ŠæŸ¥è¯¢ä¼šå°†æŸ¥åˆ°çš„æ­¦å™¨æŒ‰ç…§ç­‰çº§ä»é«˜åˆ°ä½æ’åˆ—
 }
-×°±¸ĞÅÏ¢
-1.Ãû³Æ
-2.Ö°Òµ{
-    Õ½Ê¿/ÉäÊÖ/ÕÙ»½Ê¦
+è£…å¤‡ä¿¡æ¯
+1.åç§°  string
+2.èŒä¸š{
+    1.æˆ˜å£«/2.å°„æ‰‹/3.æ³•å¸ˆ/4.å¬å”¤å¸ˆ  int
 }
-3.ÀàĞÍ{
-    ½£/µ¶/¸«/Ã¬/´¸/³ß
-    Ç¹/¹­/ÕÙ»½ÕÈ
+3.ç±»å‹{
+    1.å‰‘/2.åˆ€/3.æ–§/4.çŸ›    int
+    5.æª/6.å¼“/7.æ³•æ–/8.å¬å”¤æ–
 }
-4.µÈ¼¶{
-    Lv.1~100
+4.ç­‰çº§{
+    Lv.1~100   int
 }
-5.Æ·ÖÊ{
-    °×-ÆÕÍ¨
-    ÂÌ-¾«Á¼
-    À¶-Ï¡ÓĞ
-    ×Ï-Ê·Ê«
-    ³È-´«Ëµ
-    ºì-¾øÊÀ
+5.å“è´¨{
+    1.ç™½-æ™®é€š   int
+    2.ç»¿-ç²¾è‰¯
+    3.è“-ç¨€æœ‰
+    4.ç´«-å²è¯—
+    5.æ©™-ä¼ è¯´
+    6.çº¢-ç»ä¸–
 }
-6.¸÷ÀàÊôĞÔ{
-    ¹¥»÷Á¦
-    ¹¥»÷¾àÀë
-    ¹¥»÷ËÙ¶È
-    ±©»÷ÂÊ
+6.å„ç±»å±æ€§{
+    æ”»å‡»åŠ›   int
+    æ”»å‡»è·ç¦»  int
+    æ”»å‡»é€Ÿåº¦   int
+    æš´å‡»ç‡    int
 }
 */
 
@@ -47,30 +47,31 @@ using namespace std;
 
 struct weapon
 {
-    string name;
-    int level;
-    int quality;
-    int career;
-    int type;
-    int damage;
-    int speed;
-    int range;
-    int crit;
+    string name;   //æ­¦å™¨åå­—
+    int level;     //æ­¦å™¨ç­‰çº§
+    int quality;   //æ­¦å™¨å“è´¨
+    int career;     //æ­¦å™¨èŒä¸š
+    int type;       //æ­¦å™¨ç±»å‹
+    int damage;     //æ”»å‡»ä¼¤å®³
+    float speed;      //æ”»å‡»é€Ÿåº¦
+    float range;      //æ”»å‡»è·ç¦»
+    float crit;       //æš´å‡»ç‡
 };
 
-void Inhouse();
-void Addhouse();
-void House(string housenumber, string housename);
-void Adddata();
-void Delete();
-void Modify();
-void Search();
-void List();
-void Destroy();
+void Inhouse();   //è½½å…¥ä»“åº“
+void Addhouse();        //æ·»åŠ æ­¦å™¨åº“
+void House(string housenumber, string housename);  //æ­¦å™¨åº“
+void Adddata(string housenumber);     //æ·»åŠ æ­¦å™¨
+void Delete(string housenumber);      //åˆ é™¤æ­¦å™¨
+void Modify();      //ä¿®æ”¹æ­¦å™¨
+void Search();      //æŸ¥æ‰¾æ­¦å™¨
+void List();        //æ­¦å™¨åˆ—è¡¨
+void Destroy();     //é”€æ¯æ­¦å™¨åº“
+void WeaponInformation(struct weapon weaponinformation);  //æ‰“å°æ­¦å™¨å…·ä½“ä¿¡æ¯
 
 int main()
 {
-    char dirs[2][20] = {"house", "information"}; //ÅĞ¶ÏÍ¬¼¶Ä¿Â¼ÏÂÊÇ·ñ´æÔÚÕâÁ½¸öÎÄ¼ş¼Ğ£¬ÈôÃ»ÓĞ£¬Ôò´´½¨
+    char dirs[2][20] = {"house", "information"}; //åˆ¤æ–­åŒçº§ç›®å½•ä¸‹æ˜¯å¦å­˜åœ¨è¿™ä¸¤ä¸ªæ–‡ä»¶å¤¹ï¼Œè‹¥æ²¡æœ‰ï¼Œåˆ™åˆ›å»º
     int index;
     for (index = 0; index < 2; index++)
     {
@@ -79,8 +80,8 @@ int main()
             mkdir(dirs[index]);
         }
     }
-    system("cls"); //ÔËĞĞÇ°ÇåÆÁ
-    Inhouse();     //ÔØÈëµÇÂ¼º¯Êı/²Ö¿âÑ¡Ôñ
+    system("cls"); //è¿è¡Œå‰æ¸…å±
+    Inhouse();     //è½½å…¥ç™»å½•å‡½æ•°/ä»“åº“é€‰æ‹©
 
     cout << endl;
     system("pause");
@@ -88,75 +89,75 @@ int main()
 
 void Inhouse()
 {
-    int i = 1;                            //ÓÃÓÚÅĞ¶ÏÊÇ·ñÓĞÓÃ»§ÊäÈë¶ÔÓ¦µÄ²Ö¿â
-    string housenumber, temp_housenumber; //²Ö¿â±àºÅ µÇÂ½Ê±ÓÃÓÚ¶Ô±ÈµÄ²Ö¿â±àºÅ
-    string password, temp_password;       //²Ö¿âÃÜÂë µÇÂ½Ê±ÓÃÓÚ¶Ô±ÈµÄÃÜÂë
+    int i = 1;                            //ç”¨äºåˆ¤æ–­æ˜¯å¦æœ‰ç”¨æˆ·è¾“å…¥å¯¹åº”çš„ä»“åº“
+    string housenumber, temp_housenumber; //ä»“åº“ç¼–å· ç™»é™†æ—¶ç”¨äºå¯¹æ¯”çš„ä»“åº“ç¼–å·
+    string password, temp_password;       //ä»“åº“å¯†ç  ç™»é™†æ—¶ç”¨äºå¯¹æ¯”çš„å¯†ç 
     string housename;
-    fstream fs;                                                                   //´´½¨¶ÁĞ´ÎÄ¼şÁ÷¶ÔÏó
-    cout << "=================»¶Ó­Ê¹ÓÃ×°±¸²Ö¿â¹ÜÀíÏµÍ³=================" << endl; //½çÃæ
-    cout << "\n\t---------- ÇëÏÈÊäÈëÄúµÄ²Ö¿â±àºÅ -----------" << endl;
-    cout << "\t\t   - ÊäÈëadd´´½¨²Ö¿â -"<< endl;
-    cout << "\t\t     - ÊäÈëoffÍË³ö -\n"
+    fstream fs;                                                                   //åˆ›å»ºè¯»å†™æ–‡ä»¶æµå¯¹è±¡
+    cout << "=================æ¬¢è¿ä½¿ç”¨è£…å¤‡ä»“åº“ç®¡ç†ç³»ç»Ÿ=================" << endl; //ç•Œé¢
+    cout << "\n\t---------- è¯·å…ˆè¾“å…¥æ‚¨çš„ä»“åº“ç¼–å· -----------" << endl;
+    cout << "\t\t   - è¾“å…¥addåˆ›å»ºä»“åº“ -"<< endl;
+    cout << "\t\t     - è¾“å…¥offé€€å‡º -\n"
          << endl;
     fs.open("information/register.txt", ios::in | ios::app);
-    cout << "\t\t²Ö¿âÃû³Æ"
-         << "\t"
-         << "²Ö¿â±àºÅ\n"
-         << endl;
-    while (fs >> housename) //´òÓ¡³ö²Ö¿âÁĞ±í
+    cout << "\t\tä»“åº“åç§°" << "\t" << "ä»“åº“ç¼–å·\n" << endl;
+    while (fs >> housename) //æ‰“å°å‡ºä»“åº“åˆ—è¡¨
     {
         fs >> temp_housenumber;
         fs >> password;
         cout << "\t\t" << housename << "\t " << temp_housenumber << endl;
     }
     cout << "\n\t\t     >>>  ";
-    cin >> housenumber;       //ÓÃ»§ÊäÈë²Ö¿â±àºÅ
-    if (housenumber == "add") //Èç¹ûÓÃ»§ÊäÈëĞÂ½¨²Ö¿â ÔòÌø×ªĞÂ½¨²Ö¿âº¯Êı
+    cin >> housenumber;       //ç”¨æˆ·è¾“å…¥ä»“åº“ç¼–å·
+    if (housenumber == "add") //å¦‚æœç”¨æˆ·è¾“å…¥æ–°å»ºä»“åº“ åˆ™è·³è½¬æ–°å»ºä»“åº“å‡½æ•°
     {
-        fs.close(); //¹Ø±ÕÒÑ´ò¿ªµÄÎÄ¼ş
+        fs.close(); //å…³é—­å·²æ‰“å¼€çš„æ–‡ä»¶
         Addhouse();
     }
-    else if (housenumber == "off") //Èç¹ûÓÃ»§ÊäÈëÍË³ö ÔòÖÕÖ¹º¯Êı
+    else if (housenumber == "off") //å¦‚æœç”¨æˆ·è¾“å…¥é€€å‡º åˆ™ç»ˆæ­¢å‡½æ•°
     {
-        fs.close(); //¹Ø±ÕÒÑ´ò¿ªµÄÎÄ¼ş
+        fs.close(); //å…³é—­å·²æ‰“å¼€çš„æ–‡ä»¶
         //return;
     }
     else
     {
-        fs.clear();  //Çå³şÎÄ¼şÁ÷Ö¸ÕëÖ¸ÏòÄ©Î²µÄ±êÖ¾
-        fs.seekg(0); //Ê¹ÎÄ¼şÁ÷Ö¸ÕëÖ¸ÏòÎÄ¼ş¿ªÍ·
+        fs.clear();  //æ¸…æ¥šæ–‡ä»¶æµæŒ‡é’ˆæŒ‡å‘æœ«å°¾çš„æ ‡å¿—
+        fs.seekg(0); //ä½¿æ–‡ä»¶æµæŒ‡é’ˆæŒ‡å‘æ–‡ä»¶å¼€å¤´
         while (fs >> housename)
         {
             fs >> temp_housenumber;
             fs >> temp_password;
-            if (housenumber == temp_housenumber) //½«ÓÃ»§ÊäÈëµÄ±àºÅÓëÏÖÓĞ±àºÅ½øĞĞÖğÒ»±È¶Ô
+            if (housenumber == temp_housenumber) //å°†ç”¨æˆ·è¾“å…¥çš„ç¼–å·ä¸ç°æœ‰ç¼–å·è¿›è¡Œé€ä¸€æ¯”å¯¹
             {
-                i = 0; //ÉèÖÃi=0£¬±íÊ¾ÓÃ»§ÊäÈëÁËÕıÈ·µÄ²Ö¿â±àºÅ
+                i = 0; //è®¾ç½®i=0ï¼Œè¡¨ç¤ºç”¨æˆ·è¾“å…¥äº†æ­£ç¡®çš„ä»“åº“ç¼–å·
                 break;
             }
         }
-        fs.close(); //¹Ø±ÕÎÄ¼ş
+        fs.close(); //å…³é—­æ–‡ä»¶
         if (i)
         {
             system("cls");
-            cout << "\t\t>>>ÄúÊäÈëµÄ²Ö¿â±àºÅÓĞÎó<<<" << endl;
-            Inhouse(); //ÖØĞÂÊäÈë²Ö¿â±àºÅ
-        }
-        system("cls");                                                                //½øÈëÏÂÒ»¸öÒ³ÃæÇ°ÇåÆÁ
-        cout << "=================»¶Ó­Ê¹ÓÃ×°±¸²Ö¿â¹ÜÀíÏµÍ³=================" << endl; //½çÃæ
-        cout << "\n\t-----------ÇëÊäÈë×°±¸²Ö¿âµÄÃÜÂë-----------" << endl;
-        cout << "\n\t\t     >>>  ";
-        cin >> password;
-        if (password == temp_password) //ÅĞ¶ÏÓÃ»§ÊäÈëµÄÃÜÂëÊÇ·ñÕıÈ·
-        {
-            system("cls");  //½øÈëÏÂÒ»Ò³ÃæÖ®Ç°ÇåÆÁ
-            House(housenumber, housename);
+            cout << "\t\t>>>æ‚¨è¾“å…¥çš„ä»“åº“ç¼–å·æœ‰è¯¯<<<" << endl;
+            Inhouse(); //é‡æ–°è¾“å…¥ä»“åº“ç¼–å·
         }
         else
         {
-            system("cls");
-            cout << "\t\t>>>ÄúÊäÈëµÄ²Ö¿âÃÜÂëÓĞÎó<<<" << endl;
-            Inhouse(); //ÖØĞÂÊäÈë²Ö¿âÃÜÂë
+            system("cls");                                                                //è¿›å…¥ä¸‹ä¸€ä¸ªé¡µé¢å‰æ¸…å±
+            cout << "=================æ¬¢è¿ä½¿ç”¨è£…å¤‡ä»“åº“ç®¡ç†ç³»ç»Ÿ=================" << endl; //ç•Œé¢
+            cout << "\n\t-----------è¯·è¾“å…¥è£…å¤‡ä»“åº“çš„å¯†ç -----------" << endl;
+            cout << "\n\t\t     >>>  ";
+            cin >> password;
+            if (password == temp_password) //åˆ¤æ–­ç”¨æˆ·è¾“å…¥çš„å¯†ç æ˜¯å¦æ­£ç¡®
+            {
+                system("cls");  //è¿›å…¥ä¸‹ä¸€é¡µé¢ä¹‹å‰æ¸…å±
+                House(housenumber, housename);
+            }
+            else
+            {
+                system("cls");
+                cout << "\t\t>>>æ‚¨è¾“å…¥çš„ä»“åº“å¯†ç æœ‰è¯¯<<<" << endl;
+                Inhouse(); //é‡æ–°è¾“å…¥ä»“åº“å¯†ç 
+            }
         }
     }
 }
@@ -164,86 +165,302 @@ void Inhouse()
 void Addhouse()
 {
     system("cls");
-    time_t now; //»ñÈ¡µ±Ç°Ê±¼ä
+    time_t now; //è·å–å½“å‰æ—¶é—´
     time(&now);
-    int housenumber = now % 100000;                                               //»ñÈ¡Ò»¸ö¶ÀÒ»ÎŞ¶şµÄ²Ö¿â±àºÅ
-    cout << "=================»¶Ó­Ê¹ÓÃ×°±¸²Ö¿â¹ÜÀíÏµÍ³=================" << endl; //½çÃæ
-    cout << "\n\t-----------ÇëÊäÈëĞÂ½¨²Ö¿âµÄÃû³Æ-----------" << endl;
+    int housenumber = now % 100000;                                               //è·å–ä¸€ä¸ªç‹¬ä¸€æ— äºŒçš„ä»“åº“ç¼–å·
+    cout << "=================æ¬¢è¿ä½¿ç”¨è£…å¤‡ä»“åº“ç®¡ç†ç³»ç»Ÿ=================" << endl; //ç•Œé¢
+    cout << "\n\t-----------è¯·è¾“å…¥æ–°å»ºä»“åº“çš„åç§°-----------" << endl;
     cout << "\n\t\t>>> ";
-    string housename, password; //¶¨Òå²Ö¿âÃû³ÆºÍÃÜÂë
-    cin >> housename;           //ÊäÈëÃû³Æ
+    string housename, password; //å®šä¹‰ä»“åº“åç§°å’Œå¯†ç 
+    cin >> housename;           //è¾“å…¥åç§°
     system("cls");
-    cout << "=================»¶Ó­Ê¹ÓÃ×°±¸²Ö¿â¹ÜÀíÏµÍ³=================" << endl; //½çÃæ
-    cout << "\n\t-----------ÇëÊäÈëĞÂ½¨²Ö¿âµÄÃÜÂë-----------" << endl;
+    cout << "=================æ¬¢è¿ä½¿ç”¨è£…å¤‡ä»“åº“ç®¡ç†ç³»ç»Ÿ=================" << endl; //ç•Œé¢
+    cout << "\n\t-----------è¯·è¾“å…¥æ–°å»ºä»“åº“çš„å¯†ç -----------" << endl;
     cout << "\n\t\t>>> ";
-    cin >> password; //ÊäÈëÃÜÂë
+    cin >> password; //è¾“å…¥å¯†ç 
     ofstream fs;
     fs.open("information/register.txt", ios::app);
     fs << housename << " " << housenumber << " " << password << endl;
-    fs.close(); //¹Ø±ÕÎÄ¼ş
+    fs.close(); //å…³é—­æ–‡ä»¶
     system("cls");
-    cout << "=================»¶Ó­Ê¹ÓÃ×°±¸²Ö¿â¹ÜÀíÏµÍ³=================" << endl; //½çÃæ
-    cout << "\n\t-------------ĞÂµÄ²Ö¿â´´½¨³É¹¦-------------" << endl;
-    cout << "\n\t\t²Ö¿âÃû³Æ:  " << housename << endl;
-    cout << "\t\t²Ö¿â±àºÅ:  " << housenumber << endl;
-    cout << "\t\t²Ö¿âÃÜÂë:  " << password << endl;
+    cout << "=================æ¬¢è¿ä½¿ç”¨è£…å¤‡ä»“åº“ç®¡ç†ç³»ç»Ÿ=================" << endl; //ç•Œé¢
+    cout << "\n\t-------------æ–°çš„ä»“åº“åˆ›å»ºæˆåŠŸ-------------" << endl;
+    cout << "\n\t\tä»“åº“åç§°:  " << housename << endl;
+    cout << "\t\tä»“åº“ç¼–å·:  " << housenumber << endl;
+    cout << "\t\tä»“åº“å¯†ç :  " << password << endl;
     cout << "\n\t\t";
     system("pause");
-    system("cls"); //½øÈëÏÂÒ»²½Ç°ÇåÆÁ
+    system("cls"); //è¿›å…¥ä¸‹ä¸€æ­¥å‰æ¸…å±
     Inhouse();
 }
 
 void House(string housenumber, string housename)
 {
-    int num;   //¼ÇÈë²Ù×÷Êı
+    int num;   //è®°å…¥æ“ä½œæ•°
     string temp_housenumber = housenumber;
-    string temp = "house/"; //ÎªÏÂÒ»²½´ò¿ªÓÃ»§ÊäÈëµÄ¶ÔÓ¦²Ö¿âÖÆ×÷×Ö·û´®
+    string temp = "house/"; //ä¸ºä¸‹ä¸€æ­¥æ‰“å¼€ç”¨æˆ·è¾“å…¥çš„å¯¹åº”ä»“åº“åˆ¶ä½œå­—ç¬¦ä¸²
     temp += housenumber;
-    housenumber = temp + ".txt";
-    fstream fs;
-    fs.open(housenumber, ios::out);                                               //´ò¿ªÏàÓ¦µÄÎÄ¼ş¼Ğ ÈôÎÄ¼ş¼Ğ²»´æÔÚ Ôò´´½¨
-    cout << "=================»¶Ó­Ê¹ÓÃ×°±¸²Ö¿â¹ÜÀíÏµÍ³=================" << endl; //½çÃæ
-    cout << "\n\t-------------   " << housename << "   -------------" << endl;
-    cout << "\t\t+\t\t       +" << endl;
-    cout << "\t\t|" << "     <1> ĞÂÔöÎäÆ÷     |" << endl;
-    cout << "\t\t|" << "     <2> É¾³ıÎäÆ÷     |" << endl;
-    cout << "\t\t|" << "     <3> ĞŞ¸ÄÎäÆ÷     |" << endl;
-    cout << "\t\t|" << "     <4> ²éÕÒÎäÆ÷     |" << endl;
-    cout << "\t\t|" << "     <5> ²é¿´ÎäÆ÷¿â   |" << endl;
-    cout << "\t\t|" << "     <9> Ïú»ÙÎäÆ÷¿â   |" << endl;
-    cout << "\t\t|" << "     <0> ÍË³ö         |" << endl;
-    cout << "\t\t+\t\t       +" << endl;
+    housenumber = temp + ".txt";                                              //æ‰“å¼€ç›¸åº”çš„æ–‡ä»¶å¤¹ è‹¥æ–‡ä»¶å¤¹ä¸å­˜åœ¨ åˆ™åˆ›å»º
+    cout << "=================æ¬¢è¿ä½¿ç”¨è£…å¤‡ä»“åº“ç®¡ç†ç³»ç»Ÿ=================" << endl; //ç•Œé¢
+    cout << "\n\t--------------   " << housename << "   --------------" << endl;
+    cout << "\t\t +\t\t        +" << endl;
+    cout << "\t\t |" << "     <1> æ–°å¢æ­¦å™¨     |" << endl;
+    cout << "\t\t |" << "     <2> åˆ é™¤æ­¦å™¨     |" << endl;
+    cout << "\t\t |" << "     <3> ä¿®æ”¹æ­¦å™¨     |" << endl;
+    cout << "\t\t |" << "     <4> æŸ¥æ‰¾æ­¦å™¨     |" << endl;
+    cout << "\t\t |" << "     <5> æŸ¥çœ‹æ­¦å™¨åº“   |" << endl;
+    cout << "\t\t |" << "     <9> é”€æ¯æ­¦å™¨åº“   |" << endl;
+    cout << "\t\t |" << "     <0> é€€å‡º         |" << endl;
+    cout << "\t\t +\t\t        +" << endl;
     cout << "\n\t\t       >>> ";
-    cin >> num;   //ÓÃ»§ÊäÈë²Ù×÷Êı
-    switch (num)   //ÅĞ¶Ï²Ù×÷Êı
+    cin >> num;   //ç”¨æˆ·è¾“å…¥æ“ä½œæ•°
+    switch (num)   //åˆ¤æ–­æ“ä½œæ•°
     {
-    case 0:    //ÍË³öÎäÆ÷¿â
+    case 0:    //é€€å‡ºæ­¦å™¨åº“
         system("cls");
         Inhouse();
         break;
-    case 1:   //Ôö¼ÓÎäÆ÷
-        
-        break;
-    case 2:   //É¾³ıÎäÆ÷
-        
-        break;
-    case 3:    //ĞŞ¸ÄÎäÆ÷
-        
-        break;
-    case 4:   //²éÕÒÎäÆ÷
-        
-        break;
-    case 5:   //ÎäÆ÷ÁĞ±í
-        
-        break;
-    case 9:   //Ïú»ÙÎäÆ÷¿â
-        
-        break;
-    default:  //ÊäÈë´íÎó
+    case 1:   //å¢åŠ æ­¦å™¨
         system("cls");
-        fs.close();  //¹Ø±ÕÒÑ´ò¿ªµÄÎÄ¼ş
-        cout << "\t\t    >>>ÄúµÄÊäÈëÓĞÎó<<<" << endl;
+        Adddata(housenumber);  //è¿›å…¥æ·»åŠ å‡½æ•°
+        House(temp_housenumber, housename);  //æ“ä½œå®Œæˆåå›åˆ°ä¸Šä¸€çº§å‡½æ•°
+        break;
+    case 2:   //åˆ é™¤æ­¦å™¨
+        system("cls");
+        Delete(housenumber);  //è¿›å»åˆ é™¤å‡½æ•°
+        House(temp_housenumber, housename);  //å›åˆ°ä»“åº“
+        break;
+    case 3:    //ä¿®æ”¹æ­¦å™¨
+        
+        break;
+    case 4:   //æŸ¥æ‰¾æ­¦å™¨
+        
+        break;
+    case 5:   //æ­¦å™¨åˆ—è¡¨
+        
+        break;
+    case 9:   //é”€æ¯æ­¦å™¨åº“
+        
+        break;
+    default:  //è¾“å…¥é”™è¯¯
+        system("cls");
+        cout << "\t\t    >>>æ‚¨çš„è¾“å…¥æœ‰è¯¯<<<" << endl;
         House(temp_housenumber, housename);
         break;
     }
+}
+
+void Adddata(string housenumber)
+{
+    struct weapon add;  //åˆ›å»ºæ­¦å™¨ä¿¡æ¯ç»“æ„ä½“
+    cout << "=================æ¬¢è¿ä½¿ç”¨è£…å¤‡ä»“åº“ç®¡ç†ç³»ç»Ÿ=================" << endl; //ç•Œé¢
+    cout << "\n\t-------------   " << "æ·»åŠ æ­¦å™¨" << "   -------------" << endl;
+    cout << "\n\t             " << "è¯·è¾“å…¥æ­¦å™¨åç§°" << "" << endl;
+    cout << "\n\t\t    >>> ";
+    cin >> add.name;
+    system("cls");
+    cout << "=================æ¬¢è¿ä½¿ç”¨è£…å¤‡ä»“åº“ç®¡ç†ç³»ç»Ÿ=================" << endl; //ç•Œé¢
+    cout << "\n\t-------------   " << "æ·»åŠ æ­¦å™¨" << "   -------------" << endl;
+    cout << "\n\t             " << "è¯·è¾“å…¥æ­¦å™¨ç­‰çº§" << "" << endl;
+    cout << "\n\t             " << "Lv.0 ~ Lv.100" << "" << endl;
+    cout << "\n\t\t    >>> ";
+    cin >> add.level;
+    system("cls");
+    cout << "=================æ¬¢è¿ä½¿ç”¨è£…å¤‡ä»“åº“ç®¡ç†ç³»ç»Ÿ=================" << endl; //ç•Œé¢
+    cout << "\n\t-------------   " << "æ·»åŠ æ­¦å™¨" << "   -------------" << endl;
+    cout << "\n\t             " << "è¯·è¾“å…¥æ­¦å™¨å“è´¨" << "" << endl;
+    cout << "\n\t              " << "<1> æ™®é€š ç™½" << "" << endl;
+    cout << "\t              " << "<2> ç²¾è‰¯ ç»¿" << "" << endl;
+    cout << "\t              " << "<3> ç¨€æœ‰ è“" << "" << endl;
+    cout << "\t              " << "<4> å²è¯— ç´«" << "" << endl;
+    cout << "\t              " << "<5> ä¼ è¯´ æ©™" << "" << endl;
+    cout << "\t              " << "<6> ç»ä¸– çº¢" << "" << endl;
+    cout << "\n\t\t    >>> ";
+    cin >> add.quality;
+    system("cls");
+    cout << "=================æ¬¢è¿ä½¿ç”¨è£…å¤‡ä»“åº“ç®¡ç†ç³»ç»Ÿ=================" << endl; //ç•Œé¢
+    cout << "\n\t-------------   " << "æ·»åŠ æ­¦å™¨" << "   -------------" << endl;
+    cout << "\n\t             " << "è¯·è¾“å…¥æ­¦å™¨èŒä¸š" << "" << endl;
+    cout << "\n\t               " << "<1> æˆ˜å£«" << "" << endl;
+    cout << "\t               " << "<2> å°„æ‰‹" << "" << endl;
+    cout << "\t               " << "<3> æ³•å¸ˆ" << "" << endl;
+    cout << "\t               " << "<4> å¬å”¤å¸ˆ" << "" << endl;
+    cout << "\n\t\t    >>> ";
+    cin >> add.career;
+    system("cls");
+     //   1.å‰‘/2.åˆ€/3.æ–§/4.çŸ› 
+    //5.æª/6.å¼“/7.æ³•æ–/8.å¬å”¤æ–
+    cout << "=================æ¬¢è¿ä½¿ç”¨è£…å¤‡ä»“åº“ç®¡ç†ç³»ç»Ÿ=================" << endl; //ç•Œé¢
+    cout << "\n\t-------------   " << "æ·»åŠ æ­¦å™¨" << "   -------------" << endl;
+    cout << "\n\t             " << "è¯·è¾“å…¥æ­¦å™¨ç±»å‹" << "" << endl;
+    cout << "\n\t           " << "<1> å‰‘     <2> åˆ€" << "" << endl;
+    cout << "\t           " << "<3> æ–§     <4> çŸ›" << "" << endl;
+    cout << "\t           " << "<5> æª     <6> å¼“" << "" << endl;
+    cout << "\t           " << "<7> æ³•æ–   <8> å¬å”¤æ–" << "" << endl;
+    cout << "\n\t\t    >>> ";
+    cin >> add.type;
+    system("cls");
+    cout << "=================æ¬¢è¿ä½¿ç”¨è£…å¤‡ä»“åº“ç®¡ç†ç³»ç»Ÿ=================" << endl; //ç•Œé¢
+    cout << "\n\t-------------   " << "æ·»åŠ æ­¦å™¨" << "   -------------" << endl;
+    cout << "\n\t           " << "è¯·è¾“å…¥æ­¦å™¨æ”»å‡»ä¼¤å®³" << "" << endl;
+    cout << "\n\t\t    >>> ";
+    cin >> add.damage;
+    system("cls");
+    cout << "=================æ¬¢è¿ä½¿ç”¨è£…å¤‡ä»“åº“ç®¡ç†ç³»ç»Ÿ=================" << endl; //ç•Œé¢
+    cout << "\n\t-------------   " << "æ·»åŠ æ­¦å™¨" << "   -------------" << endl;
+    cout << "\n\t        " << "è¯·è¾“å…¥æ­¦å™¨æ”»å‡»é€Ÿåº¦(æ¯ç§’)" << "" << endl;
+    cout << "\n\t\t    >>> ";
+    cin >> add.speed;
+    system("cls");
+    cout << "=================æ¬¢è¿ä½¿ç”¨è£…å¤‡ä»“åº“ç®¡ç†ç³»ç»Ÿ=================" << endl; //ç•Œé¢
+    cout << "\n\t-------------   " << "æ·»åŠ æ­¦å™¨" << "   -------------" << endl;
+    cout << "\n\t         " << "è¯·è¾“å…¥æ­¦å™¨æ”»å‡»è·ç¦»( m )" << "" << endl;
+    cout << "\n\t\t    >>> ";
+    cin >> add.range;
+    system("cls");
+    cout << "=================æ¬¢è¿ä½¿ç”¨è£…å¤‡ä»“åº“ç®¡ç†ç³»ç»Ÿ=================" << endl; //ç•Œé¢
+    cout << "\n\t-------------   " << "æ·»åŠ æ­¦å™¨" << "   -------------" << endl;
+    cout << "\n\t      " << "è¯·è¾“å…¥æ­¦å™¨æš´å‡»ç‡(0.00 ~ 1.00)" << "" << endl;
+    cout << "\n\t\t    >>> ";
+    cin >> add.crit;
+    fstream fs;   //æ–‡ä»¶æ“ä½œæµ
+    fs.open(housenumber, ios::app);  //æ‰“å¼€å¯¹åº”æ­¦å™¨åº“æ–‡ä»¶
+    fs << add.name << " " << add.level << " " << add.quality << " "    //å½•å…¥æ­¦å™¨ä¿¡æ¯
+        << add.career << " " << add.type << " " << add.damage << " " 
+        << add.speed << " " << add.range << " " << add.crit << endl;
+    system("cls");
+    cout << "\t\t      >>>æ·»åŠ æˆåŠŸ<<<" << endl;
+    fs.close();
+}
+
+void Delete(string housenumber)
+{
+    struct weapon weaponinformation; //å®šä¹‰æ­¦å™¨ä¿¡æ¯ç»“æ„ä½“
+    string weaponname;  //æ­¦å™¨åç§°
+    cout << "=================æ¬¢è¿ä½¿ç”¨è£…å¤‡ä»“åº“ç®¡ç†ç³»ç»Ÿ=================" << endl; //ç•Œé¢
+    cout << "\n\t-------------   " << "åˆ é™¤æ­¦å™¨" << "   -------------" << endl;
+    cout << "\n\t             " << "è¯·è¾“å…¥æ­¦å™¨åç§°" << "" << endl;
+    cout << "\n\t\t    >>> ";
+    cin >> weaponname;
+    fstream fs;
+    fs.open(housenumber, ios::in);
+    while (fs >> weaponinformation.name) //æ‰“å°å‡ºåˆ é™¤æ­¦å™¨çš„æ­¦å™¨ä¿¡æ¯
+    {
+        fs >> weaponinformation.level;
+        fs >> weaponinformation.quality;
+        fs >> weaponinformation.career;
+        fs >> weaponinformation.type;
+        fs >> weaponinformation.damage;
+        fs >> weaponinformation.speed;
+        fs >> weaponinformation.range;
+        fs >> weaponinformation.crit;
+        if (weaponname == weaponinformation.name)
+        {
+            system("cls");
+            cout << "=================æ¬¢è¿ä½¿ç”¨è£…å¤‡ä»“åº“ç®¡ç†ç³»ç»Ÿ=================" << endl; //ç•Œé¢
+            cout << "\n\t-------------   " << "æ­¦å™¨è¯¦æƒ…" << "   -------------" << endl;
+            WeaponInformation(weaponinformation);
+            cout << "\n\t\t æ˜¯å¦ç¡®è®¤åˆ é™¤(Y/N):";
+            char YN;
+            cin >> YN;
+            if (YN == 'Y' || YN == 'y')
+            {
+                system("cls");
+                fs.close();  //å…³é—­å·²æ‰“å¼€çš„æ–‡ä»¶
+                cout << "\t\t      >>>åˆ é™¤æˆåŠŸ<<<" << endl;
+            }
+            else
+            {
+                system("cls");
+                fs.close();  //å…³é—­å·²æ‰“å¼€çš„æ–‡ä»¶
+                cout << "\t\t      >>>åˆ é™¤å–æ¶ˆ<<<" << endl;  //æç¤ºåˆ é™¤å–æ¶ˆ
+
+            }
+        }
+    }
+}
+
+void WeaponInformation(struct weapon weaponinformation)
+{
+    string quality, career, type;
+    switch (weaponinformation.quality)
+    {
+    case 1:
+        quality = "æ™®é€š";
+        break;
+    case 2:
+        quality = "ç²¾è‰¯";
+        break;
+    case 3:
+        quality = "ç¨€æœ‰";
+        break;
+    case 4:
+        quality = "å²è¯—";
+        break;
+    case 5:
+        quality = "ä¼ è¯´";
+        break;
+    case 6:
+        quality = "ç»ä¸–";
+        break;
+    default:
+        quality = "ä¸è¯¦";
+        break;
+    }
+    switch (weaponinformation.career)
+    {
+    case 1:
+        career = "æˆ˜å£«";
+        break;
+    case 2:
+        career = "å°„æ‰‹";
+        break;
+    case 3:
+        career = "æ³•å¸ˆ";
+        break;
+    case 4:
+        career = "å¬å”¤å¸ˆ";
+        break;
+    default:
+        career = "ä¸è¯¦";
+        break;
+    }
+    switch (weaponinformation.type)
+    {
+    case 1:
+        type = "å‰‘";
+        break;
+    case 2:
+        type = "åˆ€";
+        break;
+    case 3:
+        type = "æ–§";
+        break;
+    case 4:
+        type = "çŸ›";
+        break;
+    case 5:
+        type = "æª";
+        break;
+    case 6:
+        type = "å¼“";
+        break;
+    case 7:
+        type = "æ³•æ–";
+        break;
+    case 8:
+        type = "å¬å”¤æ–";
+        break;
+    default:
+        type = "ç‰¹æ®Š";
+        break;
+    }
+    cout << "\n\t\t|     " << quality << " " << weaponinformation.name << "  \t|" << endl; 
+    cout << "\t\t|     Lv." << weaponinformation.level << "\t\t|" << endl;
+    cout << "\t\t|     " << career << "\t\t|" << endl;
+    cout << "\t\t|     " << type << " \t\t|" << endl;
+    cout << "\t\t|     ä¼¤å®³: " << weaponinformation.damage << "\t\t|" << endl;
+    cout << "\t\t|     é€Ÿåº¦: " << weaponinformation.speed << "\t\t|" << endl;
+    cout << "\t\t|     è·ç¦»: " << weaponinformation.range << "\t\t|" << endl;
+    cout << "\t\t|     æš´å‡»: " << weaponinformation.crit << "\t\t|" << endl;
 }
