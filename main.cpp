@@ -64,7 +64,7 @@ void House(string housenumber, string housename);  //武器库
 void Adddata(string housenumber);     //添加武器
 void Delete(string housenumber);      //删除武器
 void Modify(string housenumber);      //修改武器
-void Search();      //查找武器
+void Search(string housenumber);      //查找武器
 void List();        //武器列表
 void Destroy();     //销毁武器库
 void WeaponInformation(struct weapon weaponinformation);  //打印武器具体信息
@@ -83,7 +83,8 @@ int main()
     system("cls"); //运行前清屏
     Inhouse();     //载入登录函数/仓库选择
 
-    cout << endl;
+    system("cls");  //结束前清屏
+    cout << "===感谢使用===" << endl;
     system("pause");
 }
 
@@ -114,7 +115,7 @@ void Inhouse()
         fs.close(); //关闭已打开的文件
         Addhouse();
     }
-    else if (housenumber == "off") //如果用户输入退出 则终止函数
+    else if (housenumber == "off" || housenumber == "OFF") //如果用户输入退出 则终止函数
     {
         fs.close(); //关闭已打开的文件
         //return;
@@ -260,8 +261,14 @@ void Adddata(string housenumber)
     cout << "=================欢迎使用装备仓库管理系统=================" << endl; //界面
     cout << "\n\t-------------   " << "添加武器" << "   -------------" << endl;
     cout << "\n\t             " << "请输入武器名称" << "" << endl;
+    cout << "\t             - " << "输入off返回" << " -" << endl;
     cout << "\n\t\t    >>> ";
     cin >> add.name;
+    if (add.name == "off" || add.name == "OFF")   //判断用户是否想返回
+    {
+        system("cls");
+        return;
+    }
     fstream fs;
     fs.open(housenumber, ios::in);   //打开仓库 可读
     while (fs >> temp.name)
@@ -483,8 +490,14 @@ void Delete(string housenumber)
     cout << "=================欢迎使用装备仓库管理系统=================" << endl; //界面
     cout << "\n\t-------------   " << "删除武器" << "   -------------" << endl;
     cout << "\n\t             " << "请输入武器名称" << "" << endl;
+    cout << "\t             - " << "输入off返回" << " -" << endl;
     cout << "\n\t\t    >>> ";
     cin >> weaponname;
+    if (weaponname == "off" || weaponname == "OFF")   //判断用户是否想返回
+    {
+        system("cls");
+        return;
+    }
     fstream fs;
     fs.open(housenumber, ios::in | ios::out);   //打开仓库 可读可写
     while (fs >> weaponinformation.name) //打印出删除武器的武器信息
@@ -517,11 +530,11 @@ void Delete(string housenumber)
                     4.将原文件清空，并将过度文件里的内容放回原文件
                 */
                 system("cls");
-                fs.clear();
-                fs.seekg(0);
+                fs.clear();  //清除文件在末尾的标志
+                fs.seekg(0);   //文件输出流指向开头
                 fstream temp_fs;
                 temp_fs.open("house/temp.txt", ios::trunc | ios::out | ios::in);  //可读可写 每次打开文件都是清空状态
-                while (fs >> weaponinformation.name) //打印出删除武器的武器信息
+                while (fs >> weaponinformation.name)
                 {
                     temp_count++;
                     fs >> weaponinformation.level;
@@ -570,14 +583,13 @@ void Delete(string housenumber)
                     fs << weaponinformation.range << " ";
                     fs << weaponinformation.crit << endl;
                 }
+                temp_fs.close();
                 cout << "\t\t      >>>删除成功<<<" << endl;
+                remove("house/temp.txt");  //temp文件用完后删除
             }
-            else
-            {
+            else{
                 system("cls");
-                fs.close();  //关闭已打开的文件
-                cout << "\t\t      >>>删除取消<<<" << endl;  //提示删除取消
-
+                cout << "\t\t      >>>取消删除<<<" << endl;
             }
         }
     }
@@ -587,7 +599,7 @@ void Delete(string housenumber)
         fs.close();  //关闭已打开的文件
         cout << "\t\t   >>>未查询到该武器<<<" << endl;
         Delete(housenumber); //重新进入武器删除函数
-    }   
+    }  
 }
 
 void WeaponInformation(struct weapon weaponinformation)
@@ -678,7 +690,9 @@ void WeaponInformation(struct weapon weaponinformation)
 void Modify(string housenumber)
 {
     int num = 1;      //用于判断用户是否输入了正确的武器名
+    int count = 0, temp_count = 0;    //用于记录用户修改武器的所在行
     struct weapon weaponinformation; //定义武器信息结构体
+    struct weapon temp_weaponinformation;  //武器信息暂存中间变量
     string weaponname;  //武器名称
     cout << "=================欢迎使用装备仓库管理系统=================" << endl; //界面
     cout << "\n\t-------------   " << "修改武器" << "   -------------" << endl;
@@ -695,6 +709,7 @@ void Modify(string housenumber)
     fs.open(housenumber, ios::in | ios::out);   //打开仓库 可读可写
     while (fs >> weaponinformation.name) //打印出修改武器的武器信息
     {
+        count++;
         fs >> weaponinformation.level;
         fs >> weaponinformation.quality;
         fs >> weaponinformation.career;
@@ -717,6 +732,10 @@ void Modify(string housenumber)
             cout << "       <o>退出修改" << endl;
             cout << "\n\t\t    >>> ";
             cin >> flag;
+            fs.clear();
+            fs.seekg(0);
+            fstream temp_fs;
+            temp_fs.open("house/temp.txt", ios::trunc | ios::out | ios::in);  //可读可写 每次打开文件都是清空状态
             switch (flag)
             {
             case 1:
@@ -724,54 +743,648 @@ void Modify(string housenumber)
                 cout << "=================欢迎使用装备仓库管理系统=================" << endl; //界面
                 cout << "\n\t-------------   " << "武器名称" << "   -------------" << endl;
                 cout << "\n\t\t    >>> ";
+                cin >> weaponinformation.name; 
+                while (fs >> temp_weaponinformation.name)
+                {
+                    temp_count++;
+                    fs >> temp_weaponinformation.level;
+                    fs >> temp_weaponinformation.quality;
+                    fs >> temp_weaponinformation.career;
+                    fs >> temp_weaponinformation.type;
+                    fs >> temp_weaponinformation.damage;
+                    fs >> temp_weaponinformation.speed;
+                    fs >> temp_weaponinformation.range;
+                    fs >> temp_weaponinformation.crit;
+                    if (temp_count != count)    //将所需删除的信息跳过
+                    {
+                        temp_fs << temp_weaponinformation.name << " ";     //将文件信息存放进中间文件
+                        temp_fs << temp_weaponinformation.level << " ";
+                        temp_fs << temp_weaponinformation.quality << " ";
+                        temp_fs << temp_weaponinformation.career << " ";
+                        temp_fs << temp_weaponinformation.type << " ";
+                        temp_fs << temp_weaponinformation.damage << " ";
+                        temp_fs << temp_weaponinformation.speed << " ";
+                        temp_fs << temp_weaponinformation.range << " ";
+                        temp_fs << temp_weaponinformation.crit << endl;
+                    }
+                    else
+                    {
+                        temp_fs << weaponinformation.name << " ";     //写入修改后的所在行武器信息
+                        temp_fs << weaponinformation.level << " ";
+                        temp_fs << weaponinformation.quality << " ";
+                        temp_fs << weaponinformation.career << " ";
+                        temp_fs << weaponinformation.type << " ";
+                        temp_fs << weaponinformation.damage << " ";
+                        temp_fs << weaponinformation.speed << " ";
+                        temp_fs << weaponinformation.range << " ";
+                        temp_fs << weaponinformation.crit << endl;
+                    }
+                }
+                fs.close();  //关闭已打开的文件
+                    //以新的方式打开文件（清除原文件信息并重新写入）
+                    fs.open(housenumber, ios::trunc | ios::out); 
+                    temp_fs.clear();
+                    temp_fs.seekg(0);
+                    while (temp_fs >> weaponinformation.name) //打印出删除武器的武器信息
+                    {
+                        temp_fs >> weaponinformation.level;
+                        temp_fs >> weaponinformation.quality;
+                        temp_fs >> weaponinformation.career;
+                        temp_fs >> weaponinformation.type;
+                        temp_fs >> weaponinformation.damage;
+                        temp_fs >> weaponinformation.speed;
+                        temp_fs >> weaponinformation.range;
+                        temp_fs >> weaponinformation.crit;
+                        fs << weaponinformation.name << " ";     //将文件信息存放进中间文件
+                        fs << weaponinformation.level << " ";
+                        fs << weaponinformation.quality << " ";
+                        fs << weaponinformation.career << " ";
+                        fs << weaponinformation.type << " ";
+                        fs << weaponinformation.damage << " ";
+                        fs << weaponinformation.speed << " ";
+                        fs << weaponinformation.range << " ";
+                        fs << weaponinformation.crit << endl;
+                    }
+                    temp_fs.close();
+                    system("cls");
+                    cout << "\t\t      >>>修改成功<<<" << endl;
+                    remove("house/temp.txt");  //temp文件用完后删除
                 break;
             case 2:
                 system("cls");
                 cout << "=================欢迎使用装备仓库管理系统=================" << endl; //界面
                 cout << "\n\t-------------   " << "武器等级" << "   -------------" << endl;
                 cout << "\n\t\t    >>> ";
+                cin >> weaponinformation.level;
+                while (fs >> temp_weaponinformation.name)
+                {
+                    temp_count++;
+                    fs >> temp_weaponinformation.level;
+                    fs >> temp_weaponinformation.quality;
+                    fs >> temp_weaponinformation.career;
+                    fs >> temp_weaponinformation.type;
+                    fs >> temp_weaponinformation.damage;
+                    fs >> temp_weaponinformation.speed;
+                    fs >> temp_weaponinformation.range;
+                    fs >> temp_weaponinformation.crit;
+                    if (temp_count != count)    //将所需删除的信息跳过
+                    {
+                        temp_fs << temp_weaponinformation.name << " ";     //将文件信息存放进中间文件
+                        temp_fs << temp_weaponinformation.level << " ";
+                        temp_fs << temp_weaponinformation.quality << " ";
+                        temp_fs << temp_weaponinformation.career << " ";
+                        temp_fs << temp_weaponinformation.type << " ";
+                        temp_fs << temp_weaponinformation.damage << " ";
+                        temp_fs << temp_weaponinformation.speed << " ";
+                        temp_fs << temp_weaponinformation.range << " ";
+                        temp_fs << temp_weaponinformation.crit << endl;
+                    }
+                    else
+                    {
+                        temp_fs << weaponinformation.name << " ";     //写入修改后的所在行武器信息
+                        temp_fs << weaponinformation.level << " ";
+                        temp_fs << weaponinformation.quality << " ";
+                        temp_fs << weaponinformation.career << " ";
+                        temp_fs << weaponinformation.type << " ";
+                        temp_fs << weaponinformation.damage << " ";
+                        temp_fs << weaponinformation.speed << " ";
+                        temp_fs << weaponinformation.range << " ";
+                        temp_fs << weaponinformation.crit << endl;
+                    }
+                }
+                fs.close();  //关闭已打开的文件
+                    //以新的方式打开文件（清除原文件信息并重新写入）
+                    fs.open(housenumber, ios::trunc | ios::out); 
+                    temp_fs.clear();
+                    temp_fs.seekg(0);
+                    while (temp_fs >> weaponinformation.name) //打印出删除武器的武器信息
+                    {
+                        temp_fs >> weaponinformation.level;
+                        temp_fs >> weaponinformation.quality;
+                        temp_fs >> weaponinformation.career;
+                        temp_fs >> weaponinformation.type;
+                        temp_fs >> weaponinformation.damage;
+                        temp_fs >> weaponinformation.speed;
+                        temp_fs >> weaponinformation.range;
+                        temp_fs >> weaponinformation.crit;
+                        fs << weaponinformation.name << " ";     //将文件信息存放进中间文件
+                        fs << weaponinformation.level << " ";
+                        fs << weaponinformation.quality << " ";
+                        fs << weaponinformation.career << " ";
+                        fs << weaponinformation.type << " ";
+                        fs << weaponinformation.damage << " ";
+                        fs << weaponinformation.speed << " ";
+                        fs << weaponinformation.range << " ";
+                        fs << weaponinformation.crit << endl;
+                    }
+                    temp_fs.close();
+                    system("cls");
+                    cout << "\t\t      >>>修改成功<<<" << endl;
+                    remove("house/temp.txt");  //temp文件用完后删除
                 break;
             case 3:
                 system("cls");
                 cout << "=================欢迎使用装备仓库管理系统=================" << endl; //界面
                 cout << "\n\t-------------   " << "武器品质" << "   -------------" << endl;
                 cout << "\n\t\t    >>> ";
+                cin >> weaponinformation.quality;
+                while (fs >> temp_weaponinformation.name)
+                {
+                    temp_count++;
+                    fs >> temp_weaponinformation.level;
+                    fs >> temp_weaponinformation.quality;
+                    fs >> temp_weaponinformation.career;
+                    fs >> temp_weaponinformation.type;
+                    fs >> temp_weaponinformation.damage;
+                    fs >> temp_weaponinformation.speed;
+                    fs >> temp_weaponinformation.range;
+                    fs >> temp_weaponinformation.crit;
+                    if (temp_count != count)    //将所需删除的信息跳过
+                    {
+                        temp_fs << temp_weaponinformation.name << " ";     //将文件信息存放进中间文件
+                        temp_fs << temp_weaponinformation.level << " ";
+                        temp_fs << temp_weaponinformation.quality << " ";
+                        temp_fs << temp_weaponinformation.career << " ";
+                        temp_fs << temp_weaponinformation.type << " ";
+                        temp_fs << temp_weaponinformation.damage << " ";
+                        temp_fs << temp_weaponinformation.speed << " ";
+                        temp_fs << temp_weaponinformation.range << " ";
+                        temp_fs << temp_weaponinformation.crit << endl;
+                    }
+                    else
+                    {
+                        temp_fs << weaponinformation.name << " ";     //写入修改后的所在行武器信息
+                        temp_fs << weaponinformation.level << " ";
+                        temp_fs << weaponinformation.quality << " ";
+                        temp_fs << weaponinformation.career << " ";
+                        temp_fs << weaponinformation.type << " ";
+                        temp_fs << weaponinformation.damage << " ";
+                        temp_fs << weaponinformation.speed << " ";
+                        temp_fs << weaponinformation.range << " ";
+                        temp_fs << weaponinformation.crit << endl;
+                    }
+                }
+                fs.close();  //关闭已打开的文件
+                    //以新的方式打开文件（清除原文件信息并重新写入）
+                    fs.open(housenumber, ios::trunc | ios::out); 
+                    temp_fs.clear();
+                    temp_fs.seekg(0);
+                    while (temp_fs >> weaponinformation.name) //打印出删除武器的武器信息
+                    {
+                        temp_fs >> weaponinformation.level;
+                        temp_fs >> weaponinformation.quality;
+                        temp_fs >> weaponinformation.career;
+                        temp_fs >> weaponinformation.type;
+                        temp_fs >> weaponinformation.damage;
+                        temp_fs >> weaponinformation.speed;
+                        temp_fs >> weaponinformation.range;
+                        temp_fs >> weaponinformation.crit;
+                        fs << weaponinformation.name << " ";     //将文件信息存放进中间文件
+                        fs << weaponinformation.level << " ";
+                        fs << weaponinformation.quality << " ";
+                        fs << weaponinformation.career << " ";
+                        fs << weaponinformation.type << " ";
+                        fs << weaponinformation.damage << " ";
+                        fs << weaponinformation.speed << " ";
+                        fs << weaponinformation.range << " ";
+                        fs << weaponinformation.crit << endl;
+                    }
+                    temp_fs.close();
+                    system("cls");
+                    cout << "\t\t      >>>修改成功<<<" << endl;
+                    remove("house/temp.txt");  //temp文件用完后删除
                 break;
             case 4:
                 system("cls");
                 cout << "=================欢迎使用装备仓库管理系统=================" << endl; //界面
                 cout << "\n\t-------------   " << "武器职业" << "   -------------" << endl;
                 cout << "\n\t\t    >>> ";
+                cin >> weaponinformation.career;
+                while (fs >> temp_weaponinformation.name)
+                {
+                    temp_count++;
+                    fs >> temp_weaponinformation.level;
+                    fs >> temp_weaponinformation.quality;
+                    fs >> temp_weaponinformation.career;
+                    fs >> temp_weaponinformation.type;
+                    fs >> temp_weaponinformation.damage;
+                    fs >> temp_weaponinformation.speed;
+                    fs >> temp_weaponinformation.range;
+                    fs >> temp_weaponinformation.crit;
+                    if (temp_count != count)    //将所需删除的信息跳过
+                    {
+                        temp_fs << temp_weaponinformation.name << " ";     //将文件信息存放进中间文件
+                        temp_fs << temp_weaponinformation.level << " ";
+                        temp_fs << temp_weaponinformation.quality << " ";
+                        temp_fs << temp_weaponinformation.career << " ";
+                        temp_fs << temp_weaponinformation.type << " ";
+                        temp_fs << temp_weaponinformation.damage << " ";
+                        temp_fs << temp_weaponinformation.speed << " ";
+                        temp_fs << temp_weaponinformation.range << " ";
+                        temp_fs << temp_weaponinformation.crit << endl;
+                    }
+                    else
+                    {
+                        temp_fs << weaponinformation.name << " ";     //写入修改后的所在行武器信息
+                        temp_fs << weaponinformation.level << " ";
+                        temp_fs << weaponinformation.quality << " ";
+                        temp_fs << weaponinformation.career << " ";
+                        temp_fs << weaponinformation.type << " ";
+                        temp_fs << weaponinformation.damage << " ";
+                        temp_fs << weaponinformation.speed << " ";
+                        temp_fs << weaponinformation.range << " ";
+                        temp_fs << weaponinformation.crit << endl;
+                    }
+                }
+                fs.close();  //关闭已打开的文件
+                    //以新的方式打开文件（清除原文件信息并重新写入）
+                    fs.open(housenumber, ios::trunc | ios::out); 
+                    temp_fs.clear();
+                    temp_fs.seekg(0);
+                    while (temp_fs >> weaponinformation.name) //打印出删除武器的武器信息
+                    {
+                        temp_fs >> weaponinformation.level;
+                        temp_fs >> weaponinformation.quality;
+                        temp_fs >> weaponinformation.career;
+                        temp_fs >> weaponinformation.type;
+                        temp_fs >> weaponinformation.damage;
+                        temp_fs >> weaponinformation.speed;
+                        temp_fs >> weaponinformation.range;
+                        temp_fs >> weaponinformation.crit;
+                        fs << weaponinformation.name << " ";     //将文件信息存放进中间文件
+                        fs << weaponinformation.level << " ";
+                        fs << weaponinformation.quality << " ";
+                        fs << weaponinformation.career << " ";
+                        fs << weaponinformation.type << " ";
+                        fs << weaponinformation.damage << " ";
+                        fs << weaponinformation.speed << " ";
+                        fs << weaponinformation.range << " ";
+                        fs << weaponinformation.crit << endl;
+                    }
+                    temp_fs.close();
+                    system("cls");
+                    cout << "\t\t      >>>修改成功<<<" << endl;
+                    remove("house/temp.txt");  //temp文件用完后删除
                 break;
             case 5:
                 system("cls");
                 cout << "=================欢迎使用装备仓库管理系统=================" << endl; //界面
                 cout << "\n\t-------------   " << "武器类型" << "   -------------" << endl;
                 cout << "\n\t\t    >>> ";
+                cin >> weaponinformation.type;
+                while (fs >> temp_weaponinformation.name)
+                {
+                    temp_count++;
+                    fs >> temp_weaponinformation.level;
+                    fs >> temp_weaponinformation.quality;
+                    fs >> temp_weaponinformation.career;
+                    fs >> temp_weaponinformation.type;
+                    fs >> temp_weaponinformation.damage;
+                    fs >> temp_weaponinformation.speed;
+                    fs >> temp_weaponinformation.range;
+                    fs >> temp_weaponinformation.crit;
+                    if (temp_count != count)    //将所需删除的信息跳过
+                    {
+                        temp_fs << temp_weaponinformation.name << " ";     //将文件信息存放进中间文件
+                        temp_fs << temp_weaponinformation.level << " ";
+                        temp_fs << temp_weaponinformation.quality << " ";
+                        temp_fs << temp_weaponinformation.career << " ";
+                        temp_fs << temp_weaponinformation.type << " ";
+                        temp_fs << temp_weaponinformation.damage << " ";
+                        temp_fs << temp_weaponinformation.speed << " ";
+                        temp_fs << temp_weaponinformation.range << " ";
+                        temp_fs << temp_weaponinformation.crit << endl;
+                    }
+                    else
+                    {
+                        temp_fs << weaponinformation.name << " ";     //写入修改后的所在行武器信息
+                        temp_fs << weaponinformation.level << " ";
+                        temp_fs << weaponinformation.quality << " ";
+                        temp_fs << weaponinformation.career << " ";
+                        temp_fs << weaponinformation.type << " ";
+                        temp_fs << weaponinformation.damage << " ";
+                        temp_fs << weaponinformation.speed << " ";
+                        temp_fs << weaponinformation.range << " ";
+                        temp_fs << weaponinformation.crit << endl;
+                    }
+                }
+                fs.close();  //关闭已打开的文件
+                    //以新的方式打开文件（清除原文件信息并重新写入）
+                    fs.open(housenumber, ios::trunc | ios::out); 
+                    temp_fs.clear();
+                    temp_fs.seekg(0);
+                    while (temp_fs >> weaponinformation.name) //打印出删除武器的武器信息
+                    {
+                        temp_fs >> weaponinformation.level;
+                        temp_fs >> weaponinformation.quality;
+                        temp_fs >> weaponinformation.career;
+                        temp_fs >> weaponinformation.type;
+                        temp_fs >> weaponinformation.damage;
+                        temp_fs >> weaponinformation.speed;
+                        temp_fs >> weaponinformation.range;
+                        temp_fs >> weaponinformation.crit;
+                        fs << weaponinformation.name << " ";     //将文件信息存放进中间文件
+                        fs << weaponinformation.level << " ";
+                        fs << weaponinformation.quality << " ";
+                        fs << weaponinformation.career << " ";
+                        fs << weaponinformation.type << " ";
+                        fs << weaponinformation.damage << " ";
+                        fs << weaponinformation.speed << " ";
+                        fs << weaponinformation.range << " ";
+                        fs << weaponinformation.crit << endl;
+                    }
+                    temp_fs.close();
+                    system("cls");
+                    cout << "\t\t      >>>修改成功<<<" << endl;
+                    remove("house/temp.txt");  //temp文件用完后删除
                 break;
             case 6:
                 system("cls");
                 cout << "=================欢迎使用装备仓库管理系统=================" << endl; //界面
                 cout << "\n\t-------------   " << "攻击伤害" << "   -------------" << endl;
                 cout << "\n\t\t    >>> ";
+                cin >> weaponinformation.damage;
+                while (fs >> temp_weaponinformation.name)
+                {
+                    temp_count++;
+                    fs >> temp_weaponinformation.level;
+                    fs >> temp_weaponinformation.quality;
+                    fs >> temp_weaponinformation.career;
+                    fs >> temp_weaponinformation.type;
+                    fs >> temp_weaponinformation.damage;
+                    fs >> temp_weaponinformation.speed;
+                    fs >> temp_weaponinformation.range;
+                    fs >> temp_weaponinformation.crit;
+                    if (temp_count != count)    //将所需删除的信息跳过
+                    {
+                        temp_fs << temp_weaponinformation.name << " ";     //将文件信息存放进中间文件
+                        temp_fs << temp_weaponinformation.level << " ";
+                        temp_fs << temp_weaponinformation.quality << " ";
+                        temp_fs << temp_weaponinformation.career << " ";
+                        temp_fs << temp_weaponinformation.type << " ";
+                        temp_fs << temp_weaponinformation.damage << " ";
+                        temp_fs << temp_weaponinformation.speed << " ";
+                        temp_fs << temp_weaponinformation.range << " ";
+                        temp_fs << temp_weaponinformation.crit << endl;
+                    }
+                    else
+                    {
+                        temp_fs << weaponinformation.name << " ";     //写入修改后的所在行武器信息
+                        temp_fs << weaponinformation.level << " ";
+                        temp_fs << weaponinformation.quality << " ";
+                        temp_fs << weaponinformation.career << " ";
+                        temp_fs << weaponinformation.type << " ";
+                        temp_fs << weaponinformation.damage << " ";
+                        temp_fs << weaponinformation.speed << " ";
+                        temp_fs << weaponinformation.range << " ";
+                        temp_fs << weaponinformation.crit << endl;
+                    }
+                }
+                fs.close();  //关闭已打开的文件
+                    //以新的方式打开文件（清除原文件信息并重新写入）
+                    fs.open(housenumber, ios::trunc | ios::out); 
+                    temp_fs.clear();
+                    temp_fs.seekg(0);
+                    while (temp_fs >> weaponinformation.name) //打印出删除武器的武器信息
+                    {
+                        temp_fs >> weaponinformation.level;
+                        temp_fs >> weaponinformation.quality;
+                        temp_fs >> weaponinformation.career;
+                        temp_fs >> weaponinformation.type;
+                        temp_fs >> weaponinformation.damage;
+                        temp_fs >> weaponinformation.speed;
+                        temp_fs >> weaponinformation.range;
+                        temp_fs >> weaponinformation.crit;
+                        fs << weaponinformation.name << " ";     //将文件信息存放进中间文件
+                        fs << weaponinformation.level << " ";
+                        fs << weaponinformation.quality << " ";
+                        fs << weaponinformation.career << " ";
+                        fs << weaponinformation.type << " ";
+                        fs << weaponinformation.damage << " ";
+                        fs << weaponinformation.speed << " ";
+                        fs << weaponinformation.range << " ";
+                        fs << weaponinformation.crit << endl;
+                    }
+                    temp_fs.close();
+                    system("cls");
+                    cout << "\t\t      >>>修改成功<<<" << endl;
+                    remove("house/temp.txt");  //temp文件用完后删除
                 break;
             case 7:
                 system("cls");
                 cout << "=================欢迎使用装备仓库管理系统=================" << endl; //界面
                 cout << "\n\t-------------   " << "攻击速度" << "   -------------" << endl;
                 cout << "\n\t\t    >>> ";
+                cin >> weaponinformation.speed;
+                while (fs >> temp_weaponinformation.name)
+                {
+                    temp_count++;
+                    fs >> temp_weaponinformation.level;
+                    fs >> temp_weaponinformation.quality;
+                    fs >> temp_weaponinformation.career;
+                    fs >> temp_weaponinformation.type;
+                    fs >> temp_weaponinformation.damage;
+                    fs >> temp_weaponinformation.speed;
+                    fs >> temp_weaponinformation.range;
+                    fs >> temp_weaponinformation.crit;
+                    if (temp_count != count)    //将所需删除的信息跳过
+                    {
+                        temp_fs << temp_weaponinformation.name << " ";     //将文件信息存放进中间文件
+                        temp_fs << temp_weaponinformation.level << " ";
+                        temp_fs << temp_weaponinformation.quality << " ";
+                        temp_fs << temp_weaponinformation.career << " ";
+                        temp_fs << temp_weaponinformation.type << " ";
+                        temp_fs << temp_weaponinformation.damage << " ";
+                        temp_fs << temp_weaponinformation.speed << " ";
+                        temp_fs << temp_weaponinformation.range << " ";
+                        temp_fs << temp_weaponinformation.crit << endl;
+                    }
+                    else
+                    {
+                        temp_fs << weaponinformation.name << " ";     //写入修改后的所在行武器信息
+                        temp_fs << weaponinformation.level << " ";
+                        temp_fs << weaponinformation.quality << " ";
+                        temp_fs << weaponinformation.career << " ";
+                        temp_fs << weaponinformation.type << " ";
+                        temp_fs << weaponinformation.damage << " ";
+                        temp_fs << weaponinformation.speed << " ";
+                        temp_fs << weaponinformation.range << " ";
+                        temp_fs << weaponinformation.crit << endl;
+                    }
+                }
+                fs.close();  //关闭已打开的文件
+                    //以新的方式打开文件（清除原文件信息并重新写入）
+                    fs.open(housenumber, ios::trunc | ios::out); 
+                    temp_fs.clear();
+                    temp_fs.seekg(0);
+                    while (temp_fs >> weaponinformation.name) //打印出删除武器的武器信息
+                    {
+                        temp_fs >> weaponinformation.level;
+                        temp_fs >> weaponinformation.quality;
+                        temp_fs >> weaponinformation.career;
+                        temp_fs >> weaponinformation.type;
+                        temp_fs >> weaponinformation.damage;
+                        temp_fs >> weaponinformation.speed;
+                        temp_fs >> weaponinformation.range;
+                        temp_fs >> weaponinformation.crit;
+                        fs << weaponinformation.name << " ";     //将文件信息存放进中间文件
+                        fs << weaponinformation.level << " ";
+                        fs << weaponinformation.quality << " ";
+                        fs << weaponinformation.career << " ";
+                        fs << weaponinformation.type << " ";
+                        fs << weaponinformation.damage << " ";
+                        fs << weaponinformation.speed << " ";
+                        fs << weaponinformation.range << " ";
+                        fs << weaponinformation.crit << endl;
+                    }
+                    temp_fs.close();
+                    system("cls");
+                    cout << "\t\t      >>>修改成功<<<" << endl;
+                    remove("house/temp.txt");  //temp文件用完后删除
                 break;
             case 8:
                 system("cls");
                 cout << "=================欢迎使用装备仓库管理系统=================" << endl; //界面
                 cout << "\n\t-------------   " << "攻击距离" << "   -------------" << endl;
                 cout << "\n\t\t    >>> ";
+                cin >> weaponinformation.range;
+                while (fs >> temp_weaponinformation.name)
+                {
+                    temp_count++;
+                    fs >> temp_weaponinformation.level;
+                    fs >> temp_weaponinformation.quality;
+                    fs >> temp_weaponinformation.career;
+                    fs >> temp_weaponinformation.type;
+                    fs >> temp_weaponinformation.damage;
+                    fs >> temp_weaponinformation.speed;
+                    fs >> temp_weaponinformation.range;
+                    fs >> temp_weaponinformation.crit;
+                    if (temp_count != count)    //将所需删除的信息跳过
+                    {
+                        temp_fs << temp_weaponinformation.name << " ";     //将文件信息存放进中间文件
+                        temp_fs << temp_weaponinformation.level << " ";
+                        temp_fs << temp_weaponinformation.quality << " ";
+                        temp_fs << temp_weaponinformation.career << " ";
+                        temp_fs << temp_weaponinformation.type << " ";
+                        temp_fs << temp_weaponinformation.damage << " ";
+                        temp_fs << temp_weaponinformation.speed << " ";
+                        temp_fs << temp_weaponinformation.range << " ";
+                        temp_fs << temp_weaponinformation.crit << endl;
+                    }
+                    else
+                    {
+                        temp_fs << weaponinformation.name << " ";     //写入修改后的所在行武器信息
+                        temp_fs << weaponinformation.level << " ";
+                        temp_fs << weaponinformation.quality << " ";
+                        temp_fs << weaponinformation.career << " ";
+                        temp_fs << weaponinformation.type << " ";
+                        temp_fs << weaponinformation.damage << " ";
+                        temp_fs << weaponinformation.speed << " ";
+                        temp_fs << weaponinformation.range << " ";
+                        temp_fs << weaponinformation.crit << endl;
+                    }
+                }
+                fs.close();  //关闭已打开的文件
+                    //以新的方式打开文件（清除原文件信息并重新写入）
+                    fs.open(housenumber, ios::trunc | ios::out); 
+                    temp_fs.clear();
+                    temp_fs.seekg(0);
+                    while (temp_fs >> weaponinformation.name) //打印出删除武器的武器信息
+                    {
+                        temp_fs >> weaponinformation.level;
+                        temp_fs >> weaponinformation.quality;
+                        temp_fs >> weaponinformation.career;
+                        temp_fs >> weaponinformation.type;
+                        temp_fs >> weaponinformation.damage;
+                        temp_fs >> weaponinformation.speed;
+                        temp_fs >> weaponinformation.range;
+                        temp_fs >> weaponinformation.crit;
+                        fs << weaponinformation.name << " ";     //将文件信息存放进中间文件
+                        fs << weaponinformation.level << " ";
+                        fs << weaponinformation.quality << " ";
+                        fs << weaponinformation.career << " ";
+                        fs << weaponinformation.type << " ";
+                        fs << weaponinformation.damage << " ";
+                        fs << weaponinformation.speed << " ";
+                        fs << weaponinformation.range << " ";
+                        fs << weaponinformation.crit << endl;
+                    }
+                    temp_fs.close();
+                    system("cls");
+                    cout << "\t\t      >>>修改成功<<<" << endl;
+                    remove("house/temp.txt");  //temp文件用完后删除
                 break;
             case 9:
                 system("cls");
                 cout << "=================欢迎使用装备仓库管理系统=================" << endl; //界面
                 cout << "\n\t-------------   " << "暴击几率" << "   -------------" << endl;
                 cout << "\n\t\t    >>> ";
+                cin >> weaponinformation.crit;
+                while (fs >> temp_weaponinformation.name)
+                {
+                    temp_count++;
+                    fs >> temp_weaponinformation.level;
+                    fs >> temp_weaponinformation.quality;
+                    fs >> temp_weaponinformation.career;
+                    fs >> temp_weaponinformation.type;
+                    fs >> temp_weaponinformation.damage;
+                    fs >> temp_weaponinformation.speed;
+                    fs >> temp_weaponinformation.range;
+                    fs >> temp_weaponinformation.crit;
+                    if (temp_count != count)    //将所需删除的信息跳过
+                    {
+                        temp_fs << temp_weaponinformation.name << " ";     //将文件信息存放进中间文件
+                        temp_fs << temp_weaponinformation.level << " ";
+                        temp_fs << temp_weaponinformation.quality << " ";
+                        temp_fs << temp_weaponinformation.career << " ";
+                        temp_fs << temp_weaponinformation.type << " ";
+                        temp_fs << temp_weaponinformation.damage << " ";
+                        temp_fs << temp_weaponinformation.speed << " ";
+                        temp_fs << temp_weaponinformation.range << " ";
+                        temp_fs << temp_weaponinformation.crit << endl;
+                    }
+                    else
+                    {
+                        temp_fs << weaponinformation.name << " ";     //写入修改后的所在行武器信息
+                        temp_fs << weaponinformation.level << " ";
+                        temp_fs << weaponinformation.quality << " ";
+                        temp_fs << weaponinformation.career << " ";
+                        temp_fs << weaponinformation.type << " ";
+                        temp_fs << weaponinformation.damage << " ";
+                        temp_fs << weaponinformation.speed << " ";
+                        temp_fs << weaponinformation.range << " ";
+                        temp_fs << weaponinformation.crit << endl;
+                    }
+                }
+                fs.close();  //关闭已打开的文件
+                    //以新的方式打开文件（清除原文件信息并重新写入）
+                    fs.open(housenumber, ios::trunc | ios::out); 
+                    temp_fs.clear();
+                    temp_fs.seekg(0);
+                    while (temp_fs >> weaponinformation.name) //打印出删除武器的武器信息
+                    {
+                        temp_fs >> weaponinformation.level;
+                        temp_fs >> weaponinformation.quality;
+                        temp_fs >> weaponinformation.career;
+                        temp_fs >> weaponinformation.type;
+                        temp_fs >> weaponinformation.damage;
+                        temp_fs >> weaponinformation.speed;
+                        temp_fs >> weaponinformation.range;
+                        temp_fs >> weaponinformation.crit;
+                        fs << weaponinformation.name << " ";     //将文件信息存放进中间文件
+                        fs << weaponinformation.level << " ";
+                        fs << weaponinformation.quality << " ";
+                        fs << weaponinformation.career << " ";
+                        fs << weaponinformation.type << " ";
+                        fs << weaponinformation.damage << " ";
+                        fs << weaponinformation.speed << " ";
+                        fs << weaponinformation.range << " ";
+                        fs << weaponinformation.crit << endl;
+                    }
+                    temp_fs.close();
+                    system("cls");
+                    cout << "\t\t      >>>修改成功<<<" << endl;
+                    remove("house/temp.txt");  //temp文件用完后删除
                 break;
             case 0:
                 system("cls");  //清屏返回
@@ -792,4 +1405,9 @@ void Modify(string housenumber)
         cout << "\t\t   >>>未查询到该武器<<<" << endl;
         Modify(housenumber); //重新进入武器修改函数
     }   
+}
+
+void Search(string housenumber)
+{
+    
 }
