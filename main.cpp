@@ -43,6 +43,7 @@
 #include <fstream>
 #include <ctime>
 #include <direct.h>
+#include <stdlib.h>
 using namespace std;
 
 struct weapon
@@ -65,7 +66,7 @@ void Adddata(string housenumber);     //添加武器
 void Delete(string housenumber);      //删除武器
 void Modify(string housenumber);      //修改武器
 void Search(string housenumber);      //查找武器
-void List();        //武器列表
+void List(string housenumber);        //武器列表
 void Destroy();     //销毁武器库
 void WeaponInformation(struct weapon weaponinformation);  //打印武器具体信息
 
@@ -237,10 +238,14 @@ void House(string housenumber, string housename)
         House(temp_housenumber, housename);  //回到仓库
         break;
     case 4:   //查找武器
-        
+        system("cls");
+        Search(housenumber); //进入查找函数
+        House(temp_housenumber, housename);  //回到仓库
         break;
     case 5:   //武器列表
-        
+        system("cls");
+        List(housenumber); //进入列表函数
+        House(temp_housenumber, housename);  //回到仓库
         break;
     case 9:   //销毁武器库
         
@@ -689,7 +694,8 @@ void WeaponInformation(struct weapon weaponinformation)
 
 void Modify(string housenumber)
 {
-    int num = 1;      //用于判断用户是否输入了正确的武器名
+    int num2 = 1;      //用于判断用户是否输入了正确的武器名
+    int num = 1;      //判断用户修改的正确性
     int count = 0, temp_count = 0;    //用于记录用户修改武器的所在行
     struct weapon weaponinformation; //定义武器信息结构体
     struct weapon temp_weaponinformation;  //武器信息暂存中间变量
@@ -720,7 +726,7 @@ void Modify(string housenumber)
         fs >> weaponinformation.crit;
         if (weaponname == weaponinformation.name)
         {
-            num = 0;   //武器名正确
+            num2 = 0;   //武器名正确
             int flag;  //用于记入用户输入的信息
             system("cls");
             cout << "=================欢迎使用装备仓库管理系统=================" << endl; //界面
@@ -740,10 +746,44 @@ void Modify(string housenumber)
             {
             case 1:
                 system("cls");
-                cout << "=================欢迎使用装备仓库管理系统=================" << endl; //界面
-                cout << "\n\t-------------   " << "武器名称" << "   -------------" << endl;
-                cout << "\n\t\t    >>> ";
-                cin >> weaponinformation.name; 
+                num = 1;
+                while (num)
+                {
+                    num = 0;
+                    cout << "=================欢迎使用装备仓库管理系统=================" << endl; //界面
+                    cout << "\n\t-------------   " << "武器名称" << "   -------------" << endl;
+                    cout << "\n\t\t    >>> ";
+                    cin >> weaponinformation.name;
+                    if (weaponname == weaponinformation.name){
+                        system("cls");
+                        num = 1;  //输入不正确继续循环
+                        cout << "\t\t>修改名称不能与原名称相同<" << endl;
+                    }
+                    else{
+                        struct weapon temp;
+                        fs.clear();
+                        fs.seekg(0);
+                        while (fs >> temp.name)
+                        {
+                            fs >> temp.level;
+                            fs >> temp.quality;
+                            fs >> temp.career;
+                            fs >> temp.type;
+                            fs >> temp.damage;
+                            fs >> temp.speed;
+                            fs >> temp.range;
+                            fs >> temp.crit;
+                            if (weaponinformation.name == temp.name)
+                            {
+                                system("cls");
+                                num = 1;  //输入不正确继续循环
+                                cout << "\t\t >>>已存在此名称的武器<<<" << endl;
+                            }
+                        }
+                    }
+                }
+                fs.clear();
+                fs.seekg(0);
                 while (fs >> temp_weaponinformation.name)
                 {
                     temp_count++;
@@ -782,40 +822,53 @@ void Modify(string housenumber)
                 }
                 fs.close();  //关闭已打开的文件
                     //以新的方式打开文件（清除原文件信息并重新写入）
-                    fs.open(housenumber, ios::trunc | ios::out); 
-                    temp_fs.clear();
-                    temp_fs.seekg(0);
-                    while (temp_fs >> weaponinformation.name) //打印出删除武器的武器信息
-                    {
-                        temp_fs >> weaponinformation.level;
-                        temp_fs >> weaponinformation.quality;
-                        temp_fs >> weaponinformation.career;
-                        temp_fs >> weaponinformation.type;
-                        temp_fs >> weaponinformation.damage;
-                        temp_fs >> weaponinformation.speed;
-                        temp_fs >> weaponinformation.range;
-                        temp_fs >> weaponinformation.crit;
-                        fs << weaponinformation.name << " ";     //将文件信息存放进中间文件
-                        fs << weaponinformation.level << " ";
-                        fs << weaponinformation.quality << " ";
-                        fs << weaponinformation.career << " ";
-                        fs << weaponinformation.type << " ";
-                        fs << weaponinformation.damage << " ";
-                        fs << weaponinformation.speed << " ";
-                        fs << weaponinformation.range << " ";
-                        fs << weaponinformation.crit << endl;
-                    }
-                    temp_fs.close();
-                    system("cls");
-                    cout << "\t\t      >>>修改成功<<<" << endl;
-                    remove("house/temp.txt");  //temp文件用完后删除
+                fs.open(housenumber, ios::trunc | ios::out); 
+                temp_fs.clear();
+                temp_fs.seekg(0);
+                while (temp_fs >> weaponinformation.name) //打印出删除武器的武器信息
+                {
+                    temp_fs >> weaponinformation.level;
+                    temp_fs >> weaponinformation.quality;
+                    temp_fs >> weaponinformation.career;
+                    temp_fs >> weaponinformation.type;
+                    temp_fs >> weaponinformation.damage;
+                    temp_fs >> weaponinformation.speed;
+                    temp_fs >> weaponinformation.range;
+                    temp_fs >> weaponinformation.crit;
+                    fs << weaponinformation.name << " ";     //将文件信息存放进中间文件
+                    fs << weaponinformation.level << " ";
+                    fs << weaponinformation.quality << " ";
+                    fs << weaponinformation.career << " ";
+                    fs << weaponinformation.type << " ";
+                    fs << weaponinformation.damage << " ";
+                    fs << weaponinformation.speed << " ";
+                    fs << weaponinformation.range << " ";
+                    fs << weaponinformation.crit << endl;
+                }
+                temp_fs.close();
+                system("cls");
+                cout << "\t\t      >>>修改成功<<<" << endl;
+                remove("house/temp.txt");  //temp文件用完后删除
                 break;
             case 2:
+                num = 1;
                 system("cls");
-                cout << "=================欢迎使用装备仓库管理系统=================" << endl; //界面
-                cout << "\n\t-------------   " << "武器等级" << "   -------------" << endl;
-                cout << "\n\t\t    >>> ";
-                cin >> weaponinformation.level;
+                while (num){
+                    cout << "=================欢迎使用装备仓库管理系统=================" << endl; //界面
+                    cout << "\n\t-------------   " << "武器等级" << "   -------------" << endl;
+                    cout << "\n\t             " << "Lv.0 ~ Lv.100" << "" << endl;
+                    cout << "\n\t\t    >>> ";
+                    cin >> weaponinformation.level;
+                    if (weaponinformation.level >= 0 && weaponinformation.level <= 100)
+                    {
+                        num = 0;
+                        system("cls");  //进入下一步前清屏
+                    }
+                    else{
+                        system("cls");    //输入有误 重新输入
+                        cout << "\t\t    >>>您的输入有误<<<" << endl;
+                    }
+                }
                 while (fs >> temp_weaponinformation.name)
                 {
                     temp_count++;
@@ -884,10 +937,35 @@ void Modify(string housenumber)
                 break;
             case 3:
                 system("cls");
-                cout << "=================欢迎使用装备仓库管理系统=================" << endl; //界面
-                cout << "\n\t-------------   " << "武器品质" << "   -------------" << endl;
-                cout << "\n\t\t    >>> ";
-                cin >> weaponinformation.quality;
+                num = 1;
+                while (num)
+                {   
+                    cout << "=================欢迎使用装备仓库管理系统=================" << endl; //界面
+                    cout << "\n\t-------------   " << "武器品质" << "   -------------" << endl;
+                    cout << "\n\t              " << "<1> 普通 白" << "" << endl;
+                    cout << "\t              " << "<2> 精良 绿" << "" << endl;
+                    cout << "\t              " << "<3> 稀有 蓝" << "" << endl;
+                    cout << "\t              " << "<4> 史诗 紫" << "" << endl;
+                    cout << "\t              " << "<5> 传说 橙" << "" << endl;
+                    cout << "\t              " << "<6> 绝世 红" << "" << endl;
+                    cout << "\n\t\t    >>> ";
+                    cin >> weaponinformation.quality;
+                    if (weaponinformation.quality == 1 || weaponinformation.quality == 2 || weaponinformation.quality == 3 )
+                    {
+                        num = 0;
+                        system("cls");  //进入下一步前清屏
+                    }
+                    else if (weaponinformation.quality == 4 || weaponinformation.quality == 5 || weaponinformation.quality == 6)
+                    {
+                        num = 0;
+                        system("cls");  //进入下一步前清屏
+                    }
+                    else
+                    {
+                        system("cls");    //输入有误 重新输入
+                        cout << "\t\t    >>>您的输入有误<<<" << endl;
+                    }
+                }
                 while (fs >> temp_weaponinformation.name)
                 {
                     temp_count++;
@@ -956,10 +1034,28 @@ void Modify(string housenumber)
                 break;
             case 4:
                 system("cls");
-                cout << "=================欢迎使用装备仓库管理系统=================" << endl; //界面
-                cout << "\n\t-------------   " << "武器职业" << "   -------------" << endl;
-                cout << "\n\t\t    >>> ";
-                cin >> weaponinformation.career;
+                num = 1;
+                while (num)
+                {
+                    cout << "=================欢迎使用装备仓库管理系统=================" << endl; //界面
+                    cout << "\n\t-------------   " << "武器职业" << "   -------------" << endl;
+                    cout << "\n\t               " << "<1> 战士" << "" << endl;
+                    cout << "\t               " << "<2> 射手" << "" << endl;
+                    cout << "\t               " << "<3> 法师" << "" << endl;
+                    cout << "\t               " << "<4> 召唤师" << "" << endl;
+                    cout << "\n\t\t    >>> ";
+                    cin >> weaponinformation.career;
+                    if (weaponinformation.career == 1 || weaponinformation.career == 2 || weaponinformation.career == 3 || weaponinformation.career == 4)
+                    {
+                        num = 0;
+                        system("cls");  //进入下一步前清屏
+                    }
+                    else
+                    {
+                        system("cls");    //输入有误 重新输入
+                        cout << "\t\t    >>>您的输入有误<<<" << endl;
+                    }
+                }
                 while (fs >> temp_weaponinformation.name)
                 {
                     temp_count++;
@@ -1028,10 +1124,33 @@ void Modify(string housenumber)
                 break;
             case 5:
                 system("cls");
-                cout << "=================欢迎使用装备仓库管理系统=================" << endl; //界面
-                cout << "\n\t-------------   " << "武器类型" << "   -------------" << endl;
-                cout << "\n\t\t    >>> ";
-                cin >> weaponinformation.type;
+                num = 1;
+                while (num)
+                {                
+                    cout << "=================欢迎使用装备仓库管理系统=================" << endl; //界面
+                    cout << "\n\t-------------   " << "武器类型" << "   -------------" << endl;
+                    cout << "\n\t           " << "<1> 剑     <2> 刀" << "" << endl;
+                    cout << "\t           " << "<3> 斧     <4> 矛" << "" << endl;
+                    cout << "\t           " << "<5> 枪     <6> 弓" << "" << endl;
+                    cout << "\t           " << "<7> 法杖   <8> 召唤杖" << "" << endl;
+                    cout << "\n\t\t    >>> ";
+                    cin >> weaponinformation.type;
+                    if (weaponinformation.type == 1 || weaponinformation.type == 2 || weaponinformation.type == 3 || weaponinformation.type == 4)
+                    {
+                        num = 0;
+                        system("cls");  //进入下一步前清屏
+                    }
+                    else if (weaponinformation.type == 5 || weaponinformation.type == 6 || weaponinformation.type == 7 || weaponinformation.type == 8)
+                    {
+                        num = 0;
+                        system("cls");  //进入下一步前清屏
+                    }
+                    else
+                    {
+                        system("cls");    //输入有误 重新输入
+                        cout << "\t\t    >>>您的输入有误<<<" << endl;
+                    }
+                }
                 while (fs >> temp_weaponinformation.name)
                 {
                     temp_count++;
@@ -1100,10 +1219,25 @@ void Modify(string housenumber)
                 break;
             case 6:
                 system("cls");
-                cout << "=================欢迎使用装备仓库管理系统=================" << endl; //界面
-                cout << "\n\t-------------   " << "攻击伤害" << "   -------------" << endl;
-                cout << "\n\t\t    >>> ";
-                cin >> weaponinformation.damage;
+                num = 1;
+                while (num)
+                {
+                    cout << "=================欢迎使用装备仓库管理系统=================" << endl; //界面
+                    cout << "\n\t-------------   " << "攻击伤害" << "   -------------" << endl;
+                    cout << "\n\t          " << "武器攻击伤害(0 ~ 999)" << "" << endl;
+                    cout << "\n\t\t    >>> ";
+                    cin >> weaponinformation.damage;
+                    if (weaponinformation.damage >= 0 && weaponinformation.damage <= 999)
+                    {
+                        num = 0;
+                        system("cls");  //进入下一步前清屏
+                    }
+                    else
+                    {
+                        system("cls");    //输入有误 重新输入
+                        cout << "\t\t    >>>您的输入有误<<<" << endl;
+                    }
+                }
                 while (fs >> temp_weaponinformation.name)
                 {
                     temp_count++;
@@ -1172,10 +1306,25 @@ void Modify(string housenumber)
                 break;
             case 7:
                 system("cls");
-                cout << "=================欢迎使用装备仓库管理系统=================" << endl; //界面
-                cout << "\n\t-------------   " << "攻击速度" << "   -------------" << endl;
-                cout << "\n\t\t    >>> ";
-                cin >> weaponinformation.speed;
+                num = 1;
+                while (num)
+                {               
+                    cout << "=================欢迎使用装备仓库管理系统=================" << endl; //界面
+                    cout << "\n\t-------------   " << "攻击速度" << "   -------------" << endl;
+                    cout << "\n\t           " << "武器攻击速度(每秒)" << "" << endl;
+                    cout << "\n\t\t    >>> ";
+                    cin >> weaponinformation.speed;
+                    if (weaponinformation.speed > 0)
+                    {
+                        num = 0;
+                        system("cls");  //进入下一步前清屏
+                    }
+                    else
+                    {
+                        system("cls");    //输入有误 重新输入
+                        cout << "\t\t    >>>您的输入有误<<<" << endl;
+                    }
+                }
                 while (fs >> temp_weaponinformation.name)
                 {
                     temp_count++;
@@ -1244,10 +1393,25 @@ void Modify(string housenumber)
                 break;
             case 8:
                 system("cls");
-                cout << "=================欢迎使用装备仓库管理系统=================" << endl; //界面
-                cout << "\n\t-------------   " << "攻击距离" << "   -------------" << endl;
-                cout << "\n\t\t    >>> ";
-                cin >> weaponinformation.range;
+                num = 1;
+                while (num)
+                {
+                    cout << "=================欢迎使用装备仓库管理系统=================" << endl; //界面
+                    cout << "\n\t-------------   " << "攻击距离" << "   -------------" << endl;
+                    cout << "\n\t            " << "武器攻击距离( m )" << "" << endl;
+                    cout << "\n\t\t    >>> ";
+                    cin >> weaponinformation.range;
+                    if (weaponinformation.range > 0)
+                    {
+                        num = 0;
+                        system("cls");  //进入下一步前清屏
+                    }
+                    else
+                    {
+                        system("cls");    //输入有误 重新输入
+                        cout << "\t\t    >>>您的输入有误<<<" << endl;
+                    }
+                }
                 while (fs >> temp_weaponinformation.name)
                 {
                     temp_count++;
@@ -1316,10 +1480,25 @@ void Modify(string housenumber)
                 break;
             case 9:
                 system("cls");
-                cout << "=================欢迎使用装备仓库管理系统=================" << endl; //界面
-                cout << "\n\t-------------   " << "暴击几率" << "   -------------" << endl;
-                cout << "\n\t\t    >>> ";
-                cin >> weaponinformation.crit;
+                num = 1;
+                while (num)
+                {
+                    cout << "=================欢迎使用装备仓库管理系统=================" << endl; //界面
+                    cout << "\n\t-------------   " << "暴击几率" << "   -------------" << endl;
+                    cout << "\n\t       " << "武器暴击率(0.0 ~ 1.0)" << "" << endl;
+                    cout << "\n\t\t    >>> ";
+                    cin >> weaponinformation.crit;
+                    if (weaponinformation.crit >= 0 && weaponinformation.crit <= 1)
+                    {
+                        num = 0;
+                        system("cls");  //进入下一步前清屏
+                    }
+                    else
+                    {
+                        system("cls");    //输入有误 重新输入
+                        cout << "\t\t    >>>您的输入有误<<<" << endl;
+                    }
+                }
                 while (fs >> temp_weaponinformation.name)
                 {
                     temp_count++;
@@ -1388,6 +1567,7 @@ void Modify(string housenumber)
                 break;
             case 0:
                 system("cls");  //清屏返回
+                fs.close();
                 break;
             default:
                 system("cls");
@@ -1398,7 +1578,7 @@ void Modify(string housenumber)
             }
         }
     }
-    if (num)
+    if (num2)
     {
         system("cls");
         fs.close();  //关闭已打开的文件
@@ -1409,5 +1589,110 @@ void Modify(string housenumber)
 
 void Search(string housenumber)
 {
-    
+    struct weapon weaponinformation; //定义武器信息结构体
+    string weaponname;  //武器名称
+    cout << "=================欢迎使用装备仓库管理系统=================" << endl; //界面
+    cout << "\n\t-------------   " << "查询武器" << "   -------------" << endl;
+    cout << "\n\t             " << "请输入武器名称" << "" << endl;
+    cout << "\t             - " << "输入off返回" << " -" << endl;
+    cout << "\n\t\t    >>> ";
+    cin >> weaponname;
+    if (weaponname == "off" || weaponname == "OFF")   //判断用户是否想返回
+    {
+        system("cls");
+        return;
+    }
+    fstream fs;
+    fs.open(housenumber, ios::in | ios::out);   //打开仓库 可读可写
+    while (fs >> weaponinformation.name) //打印出查找武器的武器信息
+    {
+        fs >> weaponinformation.level;
+        fs >> weaponinformation.quality;
+        fs >> weaponinformation.career;
+        fs >> weaponinformation.type;
+        fs >> weaponinformation.damage;
+        fs >> weaponinformation.speed;
+        fs >> weaponinformation.range;
+        fs >> weaponinformation.crit;
+        if (weaponname == weaponinformation.name)
+        {
+            system("cls");
+            cout << "=================欢迎使用装备仓库管理系统=================" << endl; //界面
+            cout << "\n\t-------------   " << "武器详情" << "   -------------" << endl;
+            WeaponInformation(weaponinformation);
+        }
+    }
+    cout << "\n" << "\t\t  ";
+    system("pause");
+    system("cls");
+    fs.close();
+}
+
+void List(string housenumber)
+{
+    int count = 1;
+    int num = 0;
+    struct weapon weaponinformation;
+    cout << "=================欢迎使用装备仓库管理系统=================" << endl; //界面
+    cout << "\n\t-------------   " << "武器列表" << "   -------------" << endl;
+    cout << "\t     ---" << "输入序号查看详情 0返回" << "---" << endl;
+    cout << "\t --------------------------------------" << endl;
+    fstream fs;
+    fs.open(housenumber, ios::in | ios::out);   //打开仓库文件 可读可写
+    while (fs >> weaponinformation.name) //打印出武器的武器信息
+    {
+        fs >> weaponinformation.level;
+        fs >> weaponinformation.quality;
+        fs >> weaponinformation.career;
+        fs >> weaponinformation.type;
+        fs >> weaponinformation.damage;
+        fs >> weaponinformation.speed;
+        fs >> weaponinformation.range;
+        fs >> weaponinformation.crit;
+        cout <<  "\t\t     " << "<" << count << "> " << weaponinformation.name <<endl;
+        count ++;
+    }
+    cout << "\t --------------------------------------" << endl;
+    cout << "\n\t\t    >>> ";
+    cin >> num;
+    if (num == 0)
+    {
+        fs.close();
+        return;
+    }
+    else{
+        count = 0;
+        fs.clear();
+        fs.seekg(0);
+        while (fs >> weaponinformation.name) 
+        {
+            fs >> weaponinformation.level;
+            fs >> weaponinformation.quality;
+            fs >> weaponinformation.career;
+            fs >> weaponinformation.type;
+            fs >> weaponinformation.damage;
+            fs >> weaponinformation.speed;
+            fs >> weaponinformation.range;
+            fs >> weaponinformation.crit;
+            count ++;
+            if (num == count)
+            {
+                system("cls");
+                cout << "=================欢迎使用装备仓库管理系统=================" << endl; //界面
+                cout << "\n\t-------------   " << "武器详情" << "   -------------" << endl;
+                WeaponInformation(weaponinformation);
+                cout << "\n" << "\t\t  ";
+                system("pause");
+                system("cls");
+                num = 0;
+            }           
+        }
+        if (num)
+        {
+            system("cls");
+            fs.close();  //关闭已打开的文件
+            cout << "\t\t    >>>您的输入有误<<<" << endl;
+            List(housenumber); //重新进入武器列表函数
+        }    
+    }
 }
